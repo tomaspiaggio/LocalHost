@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import {websearch} from "./src/websearch";
 import {luma} from "./src/luma";
 import {yelp} from "./src/yelp";
+import {airbnb} from "./src/airbnb";
 
 const app = express();
 app.use(express.json());
@@ -13,11 +14,19 @@ dotenv.config()
 const port = 3000
 
 app.post('/luma', async (req, res) => {
-    await luma()
+    const {city} = req.body
+    const response = await luma(city)
+
+    if (response != null) return res.json(response)
+    return res.json({response: `No events were found with query ${city} on Luma.`})
 })
 
 app.post('/yelp', async (req, res) => {
     await yelp()
+})
+
+app.post('/airbnb', async (req, res) => {
+    await airbnb()
 })
 
 app.post('/websearch', async (req, res) => {
@@ -27,5 +36,5 @@ app.post('/websearch', async (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`listening on port ${port}`)
 })

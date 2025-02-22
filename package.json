@@ -9,8 +9,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/jsdom": "^21.1.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "jsdom": "^26.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }
