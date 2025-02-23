@@ -13,23 +13,29 @@ dotenv.config()
 
 const port = 3000
 
-app.post('/luma', async (req, res) => {
+app.post('/luma/:sessionId', async (req, res) => {
+    console.log("session id for luma", req.params.sessionId)
     const {city} = req.body
     const response = await luma(city)
+
+    // write the response to db
 
     if (response != null) return res.json(response)
     return res.json({response: `No events were found with query ${city} on Luma.`})
 })
 
-app.post('/yelp', async (req, res) => {
+app.post('/yelp/:sessionId', async (req, res) => {
+    console.log("session id for yelp", req.params.sessionId)
     await yelp()
 })
 
-app.post('/airbnb', async (req, res) => {
+app.post('/airbnb/:sessionId', async (req, res) => {
+    console.log("session id for airbnb", req.params.sessionId)
     await airbnb()
 })
 
-app.post('/websearch', async (req, res) => {
+app.post('/websearch/:sessionId', async (req, res) => {
+    console.log("session id for websearch", req.params.sessionId)
     const {city, question, previous_context, additional_context} = req.body
     const {citations, content} = await websearch(city, question, previous_context, additional_context)
     res.json({response: content})
