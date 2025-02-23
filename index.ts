@@ -2,9 +2,8 @@ import express from 'express';
 import dotenv from "dotenv";
 import {websearch} from "./src/websearch";
 import {luma} from "./src/luma";
-import {airbnb} from "./src/airbnb";
 import {yelp} from "./src/yelp";
-
+import {accomodation} from "./src/accomodation";
 const app = express();
 app.use(express.json());
 
@@ -32,9 +31,9 @@ app.post('/yelp/:sessionId', async (req, res) => {
     res.json(response)
 })
 
-app.post('/airbnb/:sessionId', async (req, res) => {
-    console.log("session id for airbnb", req.params.sessionId)
-    await airbnb()
+app.post('/accomodation/:sessionId', async (req, res) => {
+    console.log("session id for accomodation", req.params.sessionId)
+    await accomodation(req, res)
 })
 
 app.post('/websearch/:sessionId', async (req, res) => {
