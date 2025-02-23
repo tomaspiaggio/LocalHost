@@ -16,7 +16,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Middlewares
-if (process.env.DEBUG != null) app.use(cors({origin: '*'}));
+// if (process.env.DEBUG != null)
+app.use(cors({origin: '*'}));
 
 let data = []
 
