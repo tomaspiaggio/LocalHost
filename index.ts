@@ -1,10 +1,11 @@
-import express from 'express';
+import express, {Request, Response} from 'express';
 import dotenv from "dotenv";
 import * as path from "path";
 import {accomodation} from "./src/tools/accomodation";
 import {luma} from "./src/tools/luma";
 import {yelp} from "./src/tools/yelp";
 import {websearch} from "./src/tools/websearch";
+import {randomUUID} from "crypto"
 
 const app = express();
 app.use(express.json());
@@ -16,19 +17,40 @@ dotenv.config()
 
 const port = 3000
 
-app.post("/start_conversation", async (req, res) => {
-
+app.get("/conversation/:conversationId", async (req, res) => {
+    const sessionId = req.params.conversationId
+    // TODO get all the information from the database and return it
+    res.json({id: sessionId})
 })
 
-app.post('/luma/:sessionId', async (req, res) => {
+app.get("/conversation/start", async (req, res) => {
+    const sessionId = randomUUID()
+    // TODO store in db
+    res.json({id: sessionId})
+})
+
+app.put("/conversation/:conversationId/end", async (req, res) => {
+    const id = req.params.conversationId
+    // TODO store new message on db with createdAt
+    const {messages} = req.body
+    res.json({id})
+})
+
+app.post("/conversation/:conversationId/end", async (req, res) => {
+    const id = req.params.conversationId
+    // TODO set to done in db
+    res.json({id})
+})
+
+app.post('/luma/:sessionId', async (req: Request, res: Response) => {
     console.log("session id for luma", req.params.sessionId)
     const {city} = req.body
     const response = await luma(city)
 
     // write the response to db
 
-    if (response != null) return res.json(response)
-    return res.json({response: `No events were found with query ${city} on Luma.`})
+    if (response != null) res.json(response)
+    else res.json({response: `No events were found with query ${city} on Luma.`})
 })
 
 app.post('/yelp/:sessionId', async (req, res) => {
