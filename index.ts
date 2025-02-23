@@ -2,8 +2,8 @@ import express from 'express';
 import dotenv from "dotenv";
 import {websearch} from "./src/websearch";
 import {luma} from "./src/luma";
-import {yelp} from "./src/yelp";
 import {airbnb} from "./src/airbnb";
+import {yelp} from "./src/yelp";
 
 const app = express();
 app.use(express.json());
@@ -26,7 +26,10 @@ app.post('/luma/:sessionId', async (req, res) => {
 
 app.post('/yelp/:sessionId', async (req, res) => {
     console.log("session id for yelp", req.params.sessionId)
-    await yelp()
+    const {location, query} = req.body
+    const response = await yelp(location, query)
+
+    res.json(response)
 })
 
 app.post('/airbnb/:sessionId', async (req, res) => {

@@ -1,4 +1,4 @@
-async function yelp({ location = 'Buenos Aires', term = 'food', sortBy = 'best_match', limit = 3 } = {}) {
+export async function yelp(location = 'Buenos Aires', term = 'food', sortBy = 'best_match', limit = 3) {
     const url = new URL('https://api.yelp.com/v3/businesses/search');
 
     if (location) url.searchParams.append('location', location);
@@ -15,17 +15,21 @@ async function yelp({ location = 'Buenos Aires', term = 'food', sortBy = 'best_m
     };
 
     try {
-        const response = await fetch(url.toString(), options);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return await response.json();
+        const rawResponse = await fetch(url.toString(), options);
+        if (!rawResponse.ok) throw new Error(`HTTP error! status: ${rawResponse.status}`);
+
+        const response = await rawResponse.json();
+
+        return response.businesses.map(e => ({
+            name: e.name,
+            imageUrl: e.image_url,
+            url: e.url,
+            categories: e.categories,
+            rating: e.rating,
+            location: e.location
+        }))
     } catch (error) {
         console.error("Error fetching Yelp data:", error);
         throw error;
     }
 }
-
-yelp({ location: 'New York', term: 'pizza'})
-    .then(data => console.log(data))
-    .catch(err => console.error(err));
