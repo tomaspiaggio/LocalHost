@@ -1,4 +1,4 @@
-# Local Host
+# Local Host Guide
 
 - [x] (T) Reverse Engineering Luma, search + extracting info from events 
 - [ ] (G) [AirBnB unofficial API](https://github.com/HalmonLui/airbnb-api)
