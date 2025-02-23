@@ -1,16 +1,24 @@
 import express from 'express';
 import dotenv from "dotenv";
-import {websearch} from "./src/websearch";
-import {luma} from "./src/luma";
-import {yelp} from "./src/yelp";
-import {accomodation} from "./src/accomodation";
+import * as path from "path";
+import {accomodation} from "./src/tools/accomodation";
+import {luma} from "./src/tools/luma";
+import {yelp} from "./src/tools/yelp";
+import {websearch} from "./src/tools/websearch";
+
 const app = express();
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 dotenv.config()
 // Don't ask follow up questions, just tell the user that you're looking for the information and then answer with the result. Allow the user to correct you or refine the information.
 
 const port = 3000
+
+app.post("/start_conversation", async (req, res) => {
+
+})
 
 app.post('/luma/:sessionId', async (req, res) => {
     console.log("session id for luma", req.params.sessionId)
